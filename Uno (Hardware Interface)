@@ -1,0 +1,86 @@
+//make sure to have some sort of input for the touchscreen or other arduino
+#include <Stepper.h>
+//#include <SoftwareServo.h> 
+
+const int stepsPerRevolution = 200;  // change this to fit the number of steps per revolution
+// for your motor
+
+// initialize the stepper library on pins 8 through 11:
+Stepper myStepper(stepsPerRevolution, 8, 9, 10, 11);
+//SoftwareServo myservo;
+
+int servoPin = 2;
+int ledPin = 4;
+int soundPin = 5;
+bool dispensed = false;
+int frequency = 1000;
+int time1;
+boolean beep = true;
+//int pills = number of pills we want to dispense - touchscreen input?
+
+void setup() {
+  // set the speed at 60 rpm:
+  myStepper.setSpeed(60);
+
+  // put your setup code here, to run once:
+  //myservo.attach(servoPin);
+
+  pinMode(ledPin, OUTPUT);
+  pinMode(soundPin, OUTPUT);
+  // initialize the serial port:
+  Serial.begin(9600);
+}
+
+void loop() {
+  // dispenses
+  //checks if dispenses is true and then sets alarm off
+  /*receive instructions or check time
+   * for (i = 0; i++; i< pills){
+   while{!dispensed}{
+   dispense();
+   }
+   dispensed = false;
+   }*/
+   alarm();
+   
+}
+
+void dispense(){
+  //figure out way to take in info on which pills at which time
+  //^^can make parameters that take in touchscreen info
+  //try to just write code for motors and piston release mech
+  //can integrate it with touchscreen or accuracy after functionality
+  /*myStepper.step(stepsPerRevolution/6);
+  //MAKE SURE^^ STEPS/REV is DIVISIBLE BY 6 OR ROTATION WILL BE OFF
+  //ALSo know that -steps go counterclockwise (for resetting?)
+  */
+  //myservo.write(value); check full scale of motion (ranges from 0 to 180 so can divide by 6 for values per container (if 360 degrees)
+  //delay(15);
+  //SoftwareServo::refresh();
+  /* if (IR SENSOR POSITIVE){
+      dispensed = true;
+   } 
+   */ 
+}
+
+void alarm(){
+  time1 = millis();
+  while ((millis()-time1) < 10000 && beep){
+  digitalWrite(ledPin, HIGH);
+  tone(soundPin, frequency);
+  delay(1000);
+  digitalWrite(ledPin, LOW);
+  noTone(soundPin);
+  delay(1000);
+  }
+  beep = false;
+}
+
+
+//FIND OUT HOW TO DISPENSE ARBITRARY PILL
+//THEN FIGURE OUT HOW TO DIFFERENTIATE DIFF PILLS
+//THEN ADD IN TIME COMPONENT - THIS WILL ALLOW
+//FOR US TO AUTOMATE PROCESS WITHOUT TAKING IN PARAMETERS
+//MAYBE INITIALIZE PARAMETERS FROM GUI AND KEEP
+//DISPENSE AS PARAMETER-FREE?
+
