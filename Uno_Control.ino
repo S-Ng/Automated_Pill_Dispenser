@@ -5,8 +5,10 @@
 // create an instance of the stepper class, specifying the number of steps of the motor and the pins it's attached to
 Stepper Compartment_stepper(STEPS, 4, 5, 6, 7);
 Stepper Elevator_stepper(STEPS, 8, 9, 10, 12);
-
-
+int code = 0;
+int dispenseArray[5] = {};
+int disNum = 0;
+bool dispense = false;
 int CurrentLoc = 6;//value 1-8. Need a way to initialize this value. Could link to LCD screen for user calibration
 
 void setup() { // put your setup code here, to run once:
@@ -21,16 +23,28 @@ void setup() { // put your setup code here, to run once:
 }
 
 void loop() {  // put your main code here, to run repeatedly:
-  
+  if (Serial.available()){
+  for (int i = 0; i<5; i++)
+  {
+    if (Serial.available())
+    { 
+      code = Serial.read();
+      Serial.println(code);
+      dispense[i] = code;
+      disNum++;
+    }
+   } dispense = true;
+  }
   // Compartment_Stepper Code
-  bool dispense = true;
+  
   if (dispense == true){
-    int NewLoc = 8; // need new location input from somewhere
+    for (int j = 0; j < disNum; j++){
+    int NewLoc = readDigit(code, 1); // need new location input from somewhere
     Move_Compartment_Stepper(NewLoc);
 
    // Elevator_Stepper Code
-   if (Move_Elevator == true){ // run code to capture pill
-      
+   // run code to capture pill
+      for (int k = 0; k < readDigit(code, 2); k++){
       float Dist = 20.6; // distance in mm to extend pill elevator into compartment
       
       while (dispensed == false){ // rerun code to capture pill, extending pill compartment slighly further
@@ -41,6 +55,8 @@ void loop() {  // put your main code here, to run repeatedly:
               dispensed = true;
           }
      }
+      }//this is int k loop, this is reading second digit of 'code' which is value of how many pills to dispense
+    }//this is int j loop, this is reading first digit of 'code' which is which pill/pill compartment we are dispensing from
   }
 }
 
@@ -84,4 +100,17 @@ void Move_Elevator_Stepper(float Dist){
 
     Serial.println("Wait for before attempting again");
     delay(3000); // wait 3 seconds. Pill enters chute during this time
+}
+
+int readDigit(int doubledigit, int place){
+  switch(place){
+    case 1:
+      code = (doubledigit - (doubledigit%10))/10;
+      break;
+
+    case 2:
+      code = doubledigit%10;
+      break;
+  }
+  return code;
 }
