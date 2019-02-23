@@ -106,12 +106,12 @@ void Move_Elevator_Stepper(float Dist){
 int readDigit(int doubledigit, int place){
   switch(place){
     case 1:
-      code = (doubledigit - (doubledigit%10))/10;
+      code2 = (doubledigit - (doubledigit%10))/10;
       break;
 
     case 2:
-      code = doubledigit%10;
+      code2 = doubledigit%10;
       break;
   }
-  return code;
+  return code2;
 }
