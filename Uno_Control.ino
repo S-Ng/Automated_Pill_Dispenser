@@ -58,6 +58,7 @@ void loop() {  // put your main code here, to run repeatedly:
       }//this is int k loop, this is reading second digit of 'code' which is value of how many pills to dispense
     }//this is int j loop, this is number of times we are dispensing
   }
+  disNum = 0;
 }
 
 // Rotate to Correct Pill Compartment
