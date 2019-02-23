@@ -59,6 +59,9 @@ void loop() {  // put your main code here, to run repeatedly:
     }//this is int j loop, this is number of times we are dispensing
   }
   disNum = 0;
+  dispense = false;
+  dispensed = false;
+  //dispenseArray = {0,0,0,0,0};
 }
 
 // Rotate to Correct Pill Compartment
