@@ -30,7 +30,7 @@ void loop() {  // put your main code here, to run repeatedly:
     { 
       code = Serial.read();
       Serial.println(code);
-      dispense[i] = code;
+      dispenseArray[i] = code;
       disNum++;    //counts how many times we are dispensing things
     }
    } dispense = true;
@@ -39,12 +39,12 @@ void loop() {  // put your main code here, to run repeatedly:
   
   if (dispense == true){
     for (int j = 0; j < disNum; j++){ 
-    int NewLoc = readDigit(code, 1); // need new location input from somewhere, first digit of 'code' is pill number/pill compartment
+    int NewLoc = readDigit(dispenseArray[j], 1); // need new location input from somewhere, first digit of 'code' is pill number/pill compartment
     Move_Compartment_Stepper(NewLoc);
 
    // Elevator_Stepper Code
    // run code to capture pill
-      for (int k = 0; k < readDigit(code, 2); k++){
+      for (int k = 0; k < readDigit(dispenseArray[j], 2); k++){
       float Dist = 20.6; // distance in mm to extend pill elevator into compartment
       
       while (dispensed == false){ // rerun code to capture pill, extending pill compartment slighly further
